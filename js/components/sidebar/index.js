@@ -25,6 +25,24 @@ const drawerCover = require("../../../img/drawer-cover.png");
 const drawerImage = require("../../../img/logo-kitchen-sink.png");
 
 const datas = [
+
+	//huannn-begin
+	{
+		name: "Lương BQ",
+		route: "LuongBQ",
+		icon: "phone-portrait",
+		bg: "#477EEA",
+		types: "1",
+	},
+	{
+		name: "BC Sản xuất",
+		route: "BCSX",
+		icon: "phone-portrait",
+		bg: "#477EEA",
+		types: "2",
+	},
+	//huannn-end
+	
 	{
 		name: "Anatomy",
 		route: "Anatomy",
