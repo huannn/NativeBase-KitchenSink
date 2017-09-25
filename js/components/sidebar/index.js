@@ -36,7 +36,14 @@ const datas = [
 	},
 	{
 		name: "BC Sản xuất",
-		route: "BCSX",
+		route: "BCSanXuat",
+		icon: "phone-portrait",
+		bg: "#477EEA",
+		types: "2",
+	},
+	{
+		name: "BC Tồn kho",
+		route: "BCTonKho",
 		icon: "phone-portrait",
 		bg: "#477EEA",
 		types: "2",

@@ -13,11 +13,15 @@ export default {
   mb: {
     marginBottom: 0
   },
-  cardItem: {paddingLeft: 2, paddingRight: 2, paddingTop: 2, paddingBottom: 2},
-  picker: { borderColor: "#3276b1", borderRadius: 4, borderWidth: 0.5, margin:1, paddingLeft: 5, paddingRight: 5, height:40},
+  cardItem: {paddingLeft: 0, paddingRight: 0, paddingTop: 2, paddingBottom: 2},
+  picker: {borderColor: "#3276b1", borderRadius: 4, borderWidth: 0.5, margin:1, paddingLeft: 5, paddingRight: 5, height:35},
   pickerHeader: { backgroundColor: "#3276b1" },
   textDefault : { color: "#fff" },
-  headerReport:{height:110},
-  listItemHeader: {fontSize:12, fontWeight:"bold", color:"#3276b1"},
-  listItem: {fontSize:10, color:"#3276b1"},
+  headerParam:{height:100},
+  liTextHeader: {fontWeight:"bold", color:"#3276b1"},
+  liText: {fontSize:14, color:"#3276b1"},
+  liHeader: {marginLeft: 5},
+  liOdd: {backgroundColor:"#fff", marginLeft: 5, paddingTop:10, paddingBottom: 10},
+  liEven: {backgroundColor:"#f4f5f7", marginLeft: 5, paddingTop:10, paddingBottom: 10},
+  paramText:{color:"#3276b1",marginLeft:5},
 };

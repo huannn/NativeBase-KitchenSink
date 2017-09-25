@@ -1,4 +1,5 @@
 import LuongBQ from './LuongBQ'
-import BCSX from './BCSX'
+import BCSanXuat from './BCSanXuat'
+import BCTonKho from './BCTonKho'
 
-export { LuongBQ, BCSX}
+export { LuongBQ, BCSanXuat, BCTonKho}

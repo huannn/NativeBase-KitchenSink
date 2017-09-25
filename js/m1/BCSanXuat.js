@@ -5,6 +5,7 @@ import {AppRegistry,
     TouchableOpacity,
     Dimensions,
     FlatList,
+    ScrollView,
     StyleSheet} from 'react-native';
 import {
   Container,
@@ -47,6 +48,7 @@ class BCSanXuat extends Component {
     super(props);
 
     let currentYear = new Date().getFullYear();
+    let currentMonth = new Date().getMonth().toString();
     let years = [];
     for (var i = 2015; i <= currentYear; i++) {
         years.push(i);
@@ -54,8 +56,11 @@ class BCSanXuat extends Component {
     
     this.state = {
       isLoaded: false,
+      dept: 0,
+      year: currentYear,
+      month: currentMonth,
       years: years,
-    };    
+    };
   }
 
   onChangeDepartment(value) {
@@ -79,21 +84,22 @@ class BCSanXuat extends Component {
     this.getReportData(this.state.month, value, this.state.dept);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     //fetch('https://facebook.github.io/react-native/movies.json')
-    fetch(MyConst.WS_URL + 'common/department')
+    let url = MyConst.WS_URL + 'common/department';
+    fetch(url)
       .then((response) => response.json())
       .then((responseJson) => {
 
         this.setState({
           isLoaded: true,
-          departments : responseJson.DataCommon});
+          departments : responseJson});
+        this.getReportData(this.state.month, this.state.year, 0);
       })
       .catch((error) => {
+        console.log("WS: " + url);
         console.log(error);
       });
-
-      // this.getReportData();
   }
 
   //reportData: ['Simon Mignolet','Nathaniel Clyne','Dejan Lovren','Mama Sakho','Emre Can','Simon Mignolet','Nathaniel Clyne','Dejan Lovren','Mama Sakho']
@@ -101,35 +107,34 @@ class BCSanXuat extends Component {
   //             {key : 3, value:'Dejan Lovren'},{key : 4, value:'Mama Sakho'},{key : 5, value:'Emre Can'}]
 
   getReportData(month, year, deptId) {
+
+    if(!month || !year) {
+      this.setState({
+            reportData: []});
+      return;
+    }
+
+    if(!deptId)
+      deptId = 0;
+
     let url = MyConst.WS_URL + 'report/bcsx?month=' + month + "&year=" + year + "&deptId=" + deptId;
-    console.log(url);
     fetch(url)
       .then(res => res.json())
       .then(responseJson => {
-        console.log(responseJson);
         this.setState({
-            reportData: responseJson.DataReportSX});
+            reportData: responseJson});
       })
       .catch(error => {
+        console.log("WS: " + url);
         console.log(error);
         this.setState({
             reportData: []});
       });
   };
 
-
-  _keyExtractor = (item, index) => item.id;
-  _renderItem = ({item}) => (
-    <Text
-      id={item.id}
-      title={item}
-    />
-  );
-
   render() {
 
     try {
-
 
         if (!this.state.isLoaded) {
           return <EmptyScreen/>
@@ -143,7 +148,7 @@ class BCSanXuat extends Component {
         return (
           <Container>
             <Header>
-              <Left>
+              <Left style={{flex:1}}>
                 <Button
                   transparent
                   onPress={() => this.props.navigation.navigate("DrawerOpen")}
@@ -151,17 +156,20 @@ class BCSanXuat extends Component {
                   <Icon name="ios-menu" />
                 </Button>
               </Left>
-              <Body>
+              <Body style={{flex:4, alignItems:"flex-start"}}>
                 <Title>Báo cáo Sản xuất</Title>
               </Body>
-              <Right/>
+              
             </Header>
 
             <Grid>
-              <Row style={styles.headerReport}> 
+              <Row style={styles.headerParam}> 
                 <Card>
                   <CardItem style={styles.cardItem}>
                     <Left>
+                      <Text style={[styles.paramText, {flex: 1}]}>Phòng ban</Text>
+                    </Left>
+                    <Right style={{flex: 2, flexDirection: 'row'}}>
                       <Picker
                               mode="dropdown"
                               placeholder="Chọn phòng ban"
@@ -174,69 +182,64 @@ class BCSanXuat extends Component {
                             >
                           {deptItems}
                         </Picker>
-                    </Left>
-                    </CardItem>
+                    </Right>
+                  </CardItem>
 
-                    <CardItem style={styles.cardItem}>
-                    <Left style={{flex: 1, flexDirection: 'row'}}>
-                        <Picker
-                              mode="dropdown"
-                              placeholder="Chọn tháng"
-                              selectedValue={this.state.month}
-                              onValueChange={this.onChangeMonth.bind(this)}
-                              headerStyle={styles.pickerHeader}
-                              headerBackButtonTextStyle={styles.textDefault}
-                              headerTitleStyle={styles.textDefault}
-                              style={styles.picker}
-                            >
-                          {monthItems}
-                        </Picker>
+                  <CardItem style={styles.cardItem}>
+                      <Left>
+                        <Text style={[styles.paramText, {flex: 1}]}>Tháng, năm</Text>
+                      </Left>
+                      <Right style={{flex: 2, flexDirection: 'row'}}>
+                          <Picker
+                                mode="dropdown"
+                                placeholder="Chọn tháng"
+                                selectedValue={this.state.month}
+                                onValueChange={this.onChangeMonth.bind(this)}
+                                headerStyle={styles.pickerHeader}
+                                headerBackButtonTextStyle={styles.textDefault}
+                                headerTitleStyle={styles.textDefault}
+                                style={styles.picker}
+                              >
+                            {monthItems}
+                          </Picker>
 
-                        <Picker
-                              mode="dropdown"
-                              placeholder="Chọn năm"
-                              selectedValue={this.state.year}
-                              onValueChange={this.onChangeYear.bind(this)}
-                              headerStyle={styles.pickerHeader}
-                              headerBackButtonTextStyle={styles.textDefault}
-                              headerTitleStyle={styles.textDefault}
-                              style={styles.picker}
-                            >
-                          {yearItems}
-                        </Picker>
-                    </Left>
+                          <Picker
+                                mode="dropdown"
+                                placeholder="Chọn năm"
+                                selectedValue={this.state.year}
+                                onValueChange={this.onChangeYear.bind(this)}
+                                headerStyle={styles.pickerHeader}
+                                headerBackButtonTextStyle={styles.textDefault}
+                                headerTitleStyle={styles.textDefault}
+                                style={styles.picker}
+                              >
+                            {yearItems}
+                          </Picker>
+                      </Right>
                   </CardItem>   
                 </Card>
               </Row>
               <Row> 
                 <Card>
-                <CardItem style={styles.cardItem}>
-                  <Body style={{flex: 1, flexDirection: 'row', width:"100%"}}>
-                    <List style={{width:"100%"}}>
-                      <ListItem>                        
-                        
-                          <Text numberOfLines={1} style={[styles.listItemHeader, {width:"35%"}]}>Phòng ban</Text>
-                          <Text numberOfLines={1} style={[styles.listItemHeader, {width:"35%"}]}>Sản phẩm</Text>
-                          <Text numberOfLines={1} style={[styles.listItemHeader, {width:"15%"}]}>SL lệnh</Text>
-                          <Text numberOfLines={1} style={[styles.listItemHeader, {width:"15%"}]}>SL nhập</Text>
-                        
-                      </ListItem>
-                    </List>
-                  </Body>  
-                </CardItem>
                 <CardItem cardBody style={{flex:1}}>
                   <Body style={{flex:1}}>                    
-                    <FlatList style={{width:"100%"}}
+                  <ScrollView horizontal={true}>
+                    <FlatList
                         data={this.state.reportData}
-                        renderItem={({item}) => 
-                                    <ListItem>
-                                      <Text numberOfLines={1} style={[styles.listItem, {width:"35%"}]}>{item.department}</Text>
-                                      <Text numberOfLines={1} style={[styles.listItem, {width:"35%"}]}>{item.product}</Text>
-                                      <Text numberOfLines={1} style={[styles.listItem, {width:"15%"}]}>{item.qtyCommand}</Text>
-                                      <Text numberOfLines={1} style={[styles.listItem, {width:"15%"}]}>{item.qtyComplete}</Text>
+                        automaticallyAdjustContentInsets={false}
+                        removeClippedSubviews={false}
+                        enableEmptySections={true}
+                        ListHeaderComponent={() => 
+                                    <ListItem style={styles.liHeader}>
+                                      <Text style={[styles.liTextHeader, {width:"35%"}]}>Phòng ban</Text>
+                                      <Text style={[styles.liTextHeader, {width:"35%"}]}>Sản phẩm</Text>
+                                      <Text style={[styles.liTextHeader, {width:"15%", textAlign:"right"}]}>SL lệnh</Text>
+                                      <Text style={[styles.liTextHeader, {width:"15%", textAlign:"right"}]}>SL nhập</Text>
                                     </ListItem>}
+                        renderItem={this._renderListItem}
                       >
                     </FlatList>   
+                  </ScrollView>
                   </Body>
                 </CardItem>
               </Card>
@@ -251,6 +254,27 @@ class BCSanXuat extends Component {
       return <EmptyScreen/>
     }
   }
+
+
+  _renderListItem({item, index}) {
+
+    if(index % 2 == 0)  {
+      return  <ListItem style={styles.liEven}>
+                <Text numberOfLines={1} style={[styles.liText, {width:"35%"}]}>{item.department}</Text>
+                <Text numberOfLines={1} style={[styles.liText, {width:"35%"}]}>{item.product}</Text>
+                <Text numberOfLines={1} style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.qtyCommand}</Text>
+                <Text numberOfLines={1} style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.qtyComplete}</Text>
+              </ListItem> 
+    } else {
+                                
+      return  <ListItem style={styles.liOdd}>
+                <Text numberOfLines={1} style={[styles.liText, {width:"35%"}]}>{item.department}</Text>
+                <Text numberOfLines={1} style={[styles.liText, {width:"35%"}]}>{item.product}</Text>
+                <Text numberOfLines={1} style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.qtyCommand}</Text>
+                <Text numberOfLines={1} style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.qtyComplete}</Text>
+              </ListItem>      
+    }
+  }  
 }
 
 export default BCSanXuat;
