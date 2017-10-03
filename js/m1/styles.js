@@ -19,7 +19,7 @@ export default {
   textDefault : { color: "#fff" },
   headerParam:{height:100},
   liTextHeader: {fontWeight:"bold", color:"#3276b1"},
-  liText: {fontSize:14, color:"#3276b1"},
+  liText: {fontSize:14, color:"#3276b1", paddingRight:2},
   liHeader: {marginLeft: 5},
   liOdd: {backgroundColor:"#fff", marginLeft: 5, paddingTop:10, paddingBottom: 10},
   liEven: {backgroundColor:"#f4f5f7", marginLeft: 5, paddingTop:10, paddingBottom: 10},

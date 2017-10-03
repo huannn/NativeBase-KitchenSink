@@ -12,4 +12,4 @@ export const CONST_MONTHS ={
         "11": "Tháng 11",
         "12": "Tháng 12",
     };
-export const WS_URL = "http://192.168.100.4:8080/IdempiereWS/rest/";
+export const WS_URL = "http://192.168.0.103:8080/IdempiereWS/rest/";

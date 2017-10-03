@@ -36,15 +36,21 @@ import Segment from "./components/segment";
 import Toast from "./components/toast";
 import Actionsheet from "./components/actionsheet";
 
-import {LuongBQ, BCSanXuat, BCTonKho} from "./m1";
+import {BCQuanSo, BCLuongBQ, BCSanXuat, BCTonKho, BCTonKhoChiTiet, BCTaiChinh, BCTaiSan, BCECA, EmptyScreen} from "./m1";
 
 const DrawerExample = DrawerNavigator(
   {
     Home: { screen: Home },
 
-    LuongBQ: { screen: LuongBQ },
+    BCQuanSo: { screen: BCQuanSo },
+    BCLuongBQ: { screen: BCLuongBQ },
     BCSanXuat: { screen: BCSanXuat },
     BCTonKho: { screen: BCTonKho },
+    BCTonKhoChiTiet: { screen: BCTonKhoChiTiet},
+    BCTaiChinh: { screen: BCTaiChinh},
+    BCTaiSan: { screen: BCTaiSan},
+    BCECA: { screen: BCECA},
+    EmptyScreen: { screen: EmptyScreen},
 
     Anatomy: { screen: Anatomy },
     Header: { screen: Header },

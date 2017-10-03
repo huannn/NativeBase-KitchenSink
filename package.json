@@ -21,13 +21,16 @@
   "dependencies": {
     "color": "1.0.3",
     "expo": "19.0.1",
+    "immutability-helper": "^2.4.0",
     "lodash": "4.13.1",
     "moment": "2.13.0",
     "native-base": "2.3.1",
     "react": "16.0.0-alpha.12",
     "react-native": "0.46.4",
     "react-native-modalbox": "1.4.2",
+    "react-native-pathjs-charts": "^0.0.31",
     "react-native-scrollable-tab-view": "0.6.7",
+    "react-native-svg": "^6.0.0-rc1",
     "react-navigation": "1.0.0-beta.11"
   }
 }
