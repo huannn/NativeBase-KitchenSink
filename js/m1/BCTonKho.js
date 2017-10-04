@@ -6,6 +6,7 @@ import {AppRegistry,
     Dimensions,
     FlatList,
     ScrollView,
+    TouchableHighlight,
     StyleSheet} from 'react-native';
 import {
   Container,
@@ -27,10 +28,12 @@ import {
   ListItem, 
   Text,
 } from "native-base";
-
 import { Grid, Row, Col } from "react-native-easy-grid";
+import ChartBar from './ChartBar.js';
+
 import EmptyScreen from "./empty.js";
 import * as MyConst from './const.js';
+
 
 // import Picker from "react-native-picker";
 // import {Cpicker,Tpicker} from 'react-native-tpicker';
@@ -50,23 +53,31 @@ class BCTonKho extends Component {
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth().toString();
     let years = [];
-    for (var i = 2015; i <= currentYear; i++) {
+    for (var i = MyConst.MIN_YEAR; i <= currentYear; i++) {
         years.push(i);
     }
     
     this.state = {
       isLoaded: false,
-      wh: 0,
-      numberRow: "50",
+      isChartView: false,
+      whId: 0,
+      numberRow: "10",
       year: currentYear,
       month: currentMonth,
       years: years,
     };
   }
 
+  onBtnSwitch(){
+
+    this.setState({
+        isChartView: !this.state.isChartView,
+    });
+  }
+
   onChangeWarehouse(value) {
     this.setState({
-      wh: value
+      whId: value
     });
     this.getReportData(value, this.state.numberRow);
   }
@@ -75,22 +86,8 @@ class BCTonKho extends Component {
     this.setState({
       numberRow: value
     });
-    this.getReportData(this.state.wh, value);
+    this.getReportData(this.state.whId, value);
   }
-
-  // onChangeMonth(value) {
-  //   this.setState({
-  //     month: value
-  //   });
-  //   this.getReportData(value, this.state.year, this.state.wh);
-  // }
-
-  // onChangeYear(value) {
-  //   this.setState({
-  //     year: value
-  //   });
-  //   this.getReportData(this.state.month, value, this.state.wh);
-  // }
 
   componentWillMount() {
     //fetch('https://facebook.github.io/react-native/movies.json')
@@ -123,7 +120,14 @@ class BCTonKho extends Component {
     fetch(url)
       .then(res => res.json())
       .then(responseJson => {
+
+        let chartData = new Array();
+        for(item of responseJson) {
+          chartData.push({"v": item.qty, "name": item.warehouse});
+        }
+
         this.setState({
+            chartData: [chartData],
             reportData: responseJson});
       })
       .catch(error => {
@@ -168,11 +172,11 @@ class BCTonKho extends Component {
                     <Left>
                       <Text style={[styles.paramText, {flex: 1}]}>Kho</Text>
                     </Left>
-                    <Right style={{flex: 2, flexDirection: 'row'}}>
+                    <Body style={{flex: 3, flexDirection: 'row'}}>
                       <Picker
                               mode="dropdown"
                               placeholder="Chọn kho"
-                              selectedValue={this.state.wh}
+                              selectedValue={this.state.whId}
                               onValueChange={this.onChangeWarehouse.bind(this)}
                               headerStyle={styles.pickerHeader}
                               headerBackButtonTextStyle={styles.textDefault}
@@ -181,13 +185,13 @@ class BCTonKho extends Component {
                             >
                           {whItems}
                         </Picker>
-                    </Right>
+                    </Body>                    
                   </CardItem>
                   <CardItem style={styles.cardItem}>
                     <Left>
-                      <Text style={[styles.paramText, {flex: 1}]}>Dòng hiển thị</Text>
+                      <Text style={[styles.paramText, {flex: 1}]}>Số hiển thị</Text>
                     </Left>
-                    <Right style={{flex: 2, flexDirection: 'row'}}>
+                    <Body style={{flex: 2, flexDirection: 'row'}}>
                       <Picker
                               mode="dropdown"
                               selectedValue={this.state.numberRow}
@@ -203,6 +207,12 @@ class BCTonKho extends Component {
                            <Item label="100" value="100" />
                            <Item label="--Tất cả--" value="0" />
                         </Picker>
+                    </Body>
+                    <Right style={{flex: 1, flexDirection: 'row', justifyContent:'flex-end'}}>                      
+                      <Button bordered rounded small style={{paddingLeft:5, paddingRight:5, marginRight:5}}
+                        onPress={() => this.onBtnSwitch()}>
+                        <Icon active name="grid" />
+                      </Button>  
                     </Right>
                   </CardItem>
                 </Card>
@@ -211,7 +221,11 @@ class BCTonKho extends Component {
                 <Card>
                 <CardItem cardBody>
                   <Body>        
-                  
+                  { this.state.isChartView? ( 
+                      <ScrollView>
+                       <ChartBar data={this.state.chartData}/>
+                      </ScrollView>
+                    ) : (
                     <FlatList
                         data={this.state.reportData}
                         automaticallyAdjustContentInsets={false}
@@ -222,10 +236,26 @@ class BCTonKho extends Component {
                                       <Text style={[styles.liTextHeader, {width:"70%"}]}>Kho</Text>
                                       <Text style={[styles.liTextHeader, {width:"30%", textAlign:"right"}]}>Số lượng</Text>                                      
                                     </ListItem>}
-                        renderItem={this._renderListItem}
+                        renderItem={
+                          ({item, index}) => (
+                              index % 2 == 0?  (
+                                            <ListItem style={styles.liEven} onPress={() => this._onPressItem(item)}>
+                                              <Text style={[styles.liText, {width:"70%"}]}>{item.warehouse}</Text>
+                                              <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
+                                            </ListItem> 
+                                         
+                                ) : (
+                                                            
+                                          <ListItem style={styles.liOdd} onPress={() => this._onPressItem(item)}>
+                                            <Text style={[styles.liText, {width:"70%"}]}>{item.warehouse}</Text>
+                                            <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
+                                          </ListItem>      
+                                  
+                                )
+                          )}
                       >
                     </FlatList>                 
-                  
+                  )}
                   </Body>
                 </CardItem>
               </Card>
@@ -241,22 +271,30 @@ class BCTonKho extends Component {
     }
   }
 
+  _onPressItem(item){
+    
+    this.props.navigation.navigate("BCTonKhoChiTiet", {whId: item.key, whName: item.warehouse});
+  };
 
   _renderListItem({item, index}) {
 
+    console.log(this.state);
+
     if(index % 2 == 0)  {
-      return  <ListItem style={styles.liEven}>
-                <Text style={[styles.liText, {width:"70%"}]}>{item.warehouse}</Text>
-                <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
-              </ListItem> 
+      return <ListItem style={styles.liEven} onPress={() => this._onPressItem(item)}>
+                  <Text style={[styles.liText, {width:"70%"}]}>{item.warehouse}</Text>
+                  <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
+                </ListItem> 
+             
     } else {
                                 
-      return  <ListItem style={styles.liOdd}>
+      return <ListItem style={styles.liOdd}>
                 <Text style={[styles.liText, {width:"70%"}]}>{item.warehouse}</Text>
                 <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
               </ListItem>      
+      
     }
-  }  
+  }
 }
 
 export default BCTonKho;

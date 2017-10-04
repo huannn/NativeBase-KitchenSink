@@ -50,7 +50,7 @@ class BCSanXuat extends Component {
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth().toString();
     let years = [];
-    for (var i = 2015; i <= currentYear; i++) {
+    for (var i = MyConst.MIN_YEAR; i <= currentYear; i++) {
         years.push(i);
     }
     

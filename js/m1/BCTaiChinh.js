@@ -50,7 +50,7 @@ class BCTaiChinh extends Component {
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth().toString();
     let years = [];
-    for (var i = 2015; i <= currentYear; i++) {
+    for (var i = MyConst.MIN_YEAR; i <= currentYear; i++) {
         years.push(i);
     }
     
@@ -192,7 +192,7 @@ class BCTaiChinh extends Component {
                            <Item label="Doanh thu" value="1" />
                            <Item label="Chi phí" value="2" />
                            <Item label="Lợi nhuận" value="3" />
-                        </Picker>
+                      </Picker>
                     </Right>
                   </CardItem>   
                 </Card>

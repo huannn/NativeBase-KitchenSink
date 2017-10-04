@@ -31,7 +31,6 @@ import {
 import { Grid, Row, Col } from "react-native-easy-grid";
 import EmptyScreen from "./empty.js";
 import * as MyConst from './const.js';
-import StockLineChartDynamicTickLabels from './StockLineChartDynamicTickLabels.js'
 
 // import Picker from "react-native-picker";
 // import {Cpicker,Tpicker} from 'react-native-tpicker';
@@ -51,7 +50,7 @@ class BCLuongBQ extends Component {
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth().toString();
     let years = [];
-    for (var i = 2015; i <= currentYear; i++) {
+    for (var i = MyConst.MIN_YEAR; i <= currentYear; i++) {
         years.push(i);
     }
     

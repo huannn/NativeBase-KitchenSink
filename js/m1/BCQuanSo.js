@@ -51,7 +51,7 @@ class BCQuanSo extends Component {
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth().toString();
     let years = [];
-    for (var i = 2015; i <= currentYear; i++) {
+    for (var i = MyConst.MIN_YEAR; i <= currentYear; i++) {
         years.push(i);
     }
     
@@ -70,14 +70,14 @@ class BCQuanSo extends Component {
     this.setState({
       dept: value
     });
-    this.getReportData(this.state.year, value);
+    this.getReportData(this.state.reportType, this.state.year, value);
   }
 
   onChangeYear(value) {
     this.setState({
       year: value
     });
-    this.getReportData(value, this.state.dept);
+    this.getReportData(this.state.reportType, value, this.state.dept);
   }
 
   componentWillMount() {
@@ -90,12 +90,19 @@ class BCQuanSo extends Component {
         this.setState({
           isLoaded: true,
           departments : responseJson});
-         this.getReportData(this.state.year, this.state.dept);
+         this.getReportData(this.state.reportType, this.state.year, this.state.dept);
       })
       .catch((error) => {
         console.log("WS: " + url);
         console.log(error);
       });     
+  }
+
+  onChangeReportType(value) {
+    this.setState({
+      reportType: value
+    });
+    this.getReportData(value, this.state.year, this.state.dept);
   }
 
   onBtnSwitch(){
@@ -105,7 +112,7 @@ class BCQuanSo extends Component {
     });
   }
 
-  getReportData(year, deptId) {
+  getReportData(reportType, year, deptId) {
 
     if(!year) {
       this.setState({
@@ -116,7 +123,7 @@ class BCQuanSo extends Component {
     if(!deptId)
       deptId = 0;
 
-    let url = MyConst.WS_URL + 'report/bchr?type=1&year=' + year + '&deptId=' + deptId;
+    let url = MyConst.WS_URL + 'report/bchr?type=' + reportType + '&year=' + year + '&deptId=' + deptId;
     fetch(url)
       .then(res => res.json())
       .then(responseJson => {
@@ -172,7 +179,7 @@ class BCQuanSo extends Component {
                 </Button>
               </Left>
               <Body style={{flex:4, alignItems:"flex-start"}}>
-                <Title>Báo cáo Quân số</Title>
+                <Title>Báo cáo NS - TL</Title>
               </Body>
               
             </Header>
@@ -184,7 +191,7 @@ class BCQuanSo extends Component {
                     <Left style={{flex: 1, flexDirection: 'row'}}>
                       <Text style={[styles.paramText, {flex: 1}]}>Phòng ban</Text>
                     </Left>
-                    <Body style={{flex: 3, flexDirection: 'row'}}>
+                    <Body style={{flex: 4, flexDirection: 'row'}}>
                       <Picker
                               mode="dialog"
                               placeholder="Chọn phòng ban"
@@ -198,12 +205,18 @@ class BCQuanSo extends Component {
                           {deptItems}
                         </Picker>
                     </Body>
+                    <Right style={{flex: 1, flexDirection: 'row', justifyContent:'flex-end'}}>                      
+                      <Button bordered rounded small style={{paddingLeft:5, paddingRight:5, marginRight:5}}
+                        onPress={() => this.onBtnSwitch()}>
+                        <Icon active name="grid" />
+                      </Button>  
+                    </Right>
                   </CardItem>
                   <CardItem style={styles.cardItem}>
                       <Left style={{flex: 1, flexDirection: 'row'}}>
                         <Text style={[styles.paramText, {flex: 1}]}>Năm</Text>
                       </Left>
-                      <Body style={{flex: 2, flexDirection: 'row'}}>
+                      <Body style={{flex: 1, flexDirection: 'row'}}>
                         <Picker
                                 mode="dialog"
                                 placeholder="Chọn năm"
@@ -217,12 +230,22 @@ class BCQuanSo extends Component {
                             {yearItems}
                           </Picker>
                       </Body>
-                      <Right style={{flex: 1, flexDirection: 'row', justifyContent:'flex-end'}}>
-                          
-                          <Button small style={{paddingLeft:5, paddingRight:5, marginRight:5}}
-                            onPress={() => this.onBtnSwitch()}>
-                            <Icon active name="grid" />
-                          </Button>                         
+                      <Right style={{flex: 2, flexDirection: 'row'}}>
+                          <Text style={[styles.paramText, {flex: 1}]}>Loại báo cáo</Text>
+                      </Right>
+                      <Right style={{flex: 2, flexDirection: 'row'}}>                          
+                          <Picker
+                              mode="dropdown"
+                              selectedValue={this.state.reportType}
+                              onValueChange={this.onChangeReportType.bind(this)}
+                              headerStyle={styles.pickerHeader}
+                              headerBackButtonTextStyle={styles.textDefault}
+                              headerTitleStyle={styles.textDefault}
+                              style={styles.picker}
+                            >                           
+                           <Item label="Quân số" value="1" />
+                           <Item label="Lương BQ" value="2" />
+                        </Picker>                       
                       </Right>
                   </CardItem>
                 </Card>
@@ -232,9 +255,9 @@ class BCQuanSo extends Component {
                 <CardItem cardBody style={{flex:1}}>
                   <Body style={{flex:1}}>
                   { this.state.isChartView? ( 
-
+                      <ScrollView>
                        <ChartMonth data={this.state.chartData}/>
-
+                      </ScrollView>
                     ) : (
                     <FlatList
                         data={this.state.reportData}
@@ -244,12 +267,16 @@ class BCQuanSo extends Component {
                         ListHeaderComponent={() => 
                                     <ListItem style={styles.liHeader}>
                                       <Text style={[styles.liTextHeader, {width:"70%"}]}>Tháng</Text>                                      
-                                      <Text style={[styles.liTextHeader, {width:"30%", textAlign:"right"}]}>Số lượng</Text>
+                                      <Text style={[styles.liTextHeader, {width:"30%", textAlign:"right"}]}>
+                                      { this.state.reportType == '1'? ('Quân số') : ('Lương BQ (triệu)') 
+                                      }
+                                      
+                                      </Text>
                                     </ListItem>}
                         renderItem={this._renderListItem}
                       >
                     </FlatList>
-                   ) }
+                   )}
                   </Body>
                 </CardItem>
               </Card>

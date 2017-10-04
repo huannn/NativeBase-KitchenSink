@@ -12,4 +12,6 @@ export const CONST_MONTHS ={
         "11": "Tháng 11",
         "12": "Tháng 12",
     };
-export const WS_URL = "http://192.168.0.103:8080/IdempiereWS/rest/";
+export const WS_URL = "http://192.168.19.118:8080/IdempiereWS/rest/";
+export const MARGIN_CHART ={"width":50, "height":250};
+export const MIN_YEAR = 2016;

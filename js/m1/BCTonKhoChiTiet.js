@@ -27,8 +27,9 @@ import {
   ListItem, 
   Text,
 } from "native-base";
-
 import { Grid, Row, Col } from "react-native-easy-grid";
+import ChartBar from './ChartBar.js';
+
 import EmptyScreen from "./empty.js";
 import * as MyConst from './const.js';
 
@@ -50,23 +51,36 @@ class BCTonKhoChiTiet extends Component {
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth().toString();
     let years = [];
-    for (var i = 2015; i <= currentYear; i++) {
+    for (var i = MyConst.MIN_YEAR; i <= currentYear; i++) {
         years.push(i);
     }
+
+    // console.log('=========================================================');
+    // console.log(this.props);
+    // console.log("state : " + this.props.navigation.state.params.whId);
     
     this.state = {
       isLoaded: false,
-      wh: 0,
-      numberRow: "50",
+      isChartView: false,
+      whId: this.props.navigation.state.params.whId,
+      whName: this.props.navigation.state.params.whName,
+      numberRow: "10",
       year: currentYear,
       month: currentMonth,
       years: years,
     };
   }
 
+  onBtnSwitch(){
+
+    this.setState({
+        isChartView: !this.state.isChartView,
+    });
+  }
+
   onChangeWarehouse(value) {
     this.setState({
-      wh: value
+      whId: value
     });
     this.getReportData(value, this.state.numberRow);
   }
@@ -75,44 +89,27 @@ class BCTonKhoChiTiet extends Component {
     this.setState({
       numberRow: value
     });
-    this.getReportData(this.state.wh, value);
+    this.getReportData(this.state.whId, value);
   }
-
-  // onChangeMonth(value) {
-  //   this.setState({
-  //     month: value
-  //   });
-  //   this.getReportData(value, this.state.year, this.state.wh);
-  // }
-
-  // onChangeYear(value) {
-  //   this.setState({
-  //     year: value
-  //   });
-  //   this.getReportData(this.state.month, value, this.state.wh);
-  // }
 
   componentWillMount() {
-    //fetch('https://facebook.github.io/react-native/movies.json')
-    let url = MyConst.WS_URL + 'common/warehouse';
-    fetch(url)
-      .then((response) => response.json())
-      .then((responseJson) => {
+    // let url = MyConst.WS_URL + 'common/warehouse';
+    // fetch(url)
+    //   .then((response) => response.json())
+    //   .then((responseJson) => {
 
-        this.setState({
-          isLoaded: true,
-          warehouses : responseJson});
-        this.getReportData(0, this.state.numberRow);
-      })
-      .catch((error) => {
-        console.log("WS: " + url);
-        console.log(error);
-      });
+    //     this.setState({
+    //       isLoaded: true,
+    //       warehouses : responseJson});
+    //     this.getReportData(this.state.whId, this.state.numberRow);
+    //   })
+    //   .catch((error) => {
+    //     console.log("WS: " + url);
+    //     console.log(error);
+    //   });
+
+    this.getReportData(this.state.whId, this.state.numberRow);
   }
-
-  //reportData: ['Simon Mignolet','Nathaniel Clyne','Dejan Lovren','Mama Sakho','Emre Can','Simon Mignolet','Nathaniel Clyne','Dejan Lovren','Mama Sakho']
-  // reportData: [{key: 1, value:'Simon Mignolet'},{key : 2, value:'Nathaniel Clyne'},
-  //             {key : 3, value:'Dejan Lovren'},{key : 4, value:'Mama Sakho'},{key : 5, value:'Emre Can'}]
 
   getReportData(whId, numberRow) {
 
@@ -123,7 +120,14 @@ class BCTonKhoChiTiet extends Component {
     fetch(url)
       .then(res => res.json())
       .then(responseJson => {
+
+        let chartData = new Array();
+        for(item of responseJson) {
+          chartData.push({"v": item.qty, "name": item.product});
+        }
+
         this.setState({
+            chartData: [chartData],
             reportData: responseJson});
       })
       .catch(error => {
@@ -138,21 +142,14 @@ class BCTonKhoChiTiet extends Component {
 
     try {
 
-        if (!this.state.isLoaded) {
-          return <EmptyScreen/>
-        }
-
-        let whItems = this.state.warehouses.map((item) => {return (<Item label={item.name} value={item.id} key={item.id}/>)});
-
         return (
           <Container>
             <Header>
               <Left style={{flex:1}}>
                 <Button
                   transparent
-                  onPress={() => this.props.navigation.navigate("DrawerOpen")}
-                >
-                  <Icon name="ios-menu" />
+                  onPress={() => this.props.navigation.goBack()}>
+                  <Icon name="arrow-back" />
                 </Button>
               </Left>
               <Body style={{flex:4, alignItems:"flex-start"}}>
@@ -168,26 +165,15 @@ class BCTonKhoChiTiet extends Component {
                     <Left>
                       <Text style={[styles.paramText, {flex: 1}]}>Kho</Text>
                     </Left>
-                    <Right style={{flex: 2, flexDirection: 'row'}}>
-                      <Picker
-                              mode="dropdown"
-                              placeholder="Chọn kho"
-                              selectedValue={this.state.wh}
-                              onValueChange={this.onChangeWarehouse.bind(this)}
-                              headerStyle={styles.pickerHeader}
-                              headerBackButtonTextStyle={styles.textDefault}
-                              headerTitleStyle={styles.textDefault}
-                              style={styles.picker}
-                            >
-                          {whItems}
-                        </Picker>
+                    <Right style={{flex: 3, flexDirection: 'row'}}>
+                      <Text>{this.state.whName}</Text>
                     </Right>
                   </CardItem>
                   <CardItem style={styles.cardItem}>
                     <Left>
-                      <Text style={[styles.paramText, {flex: 1}]}>Dòng hiển thị</Text>
+                      <Text style={[styles.paramText, {flex: 1}]}>Số hiển thị</Text>
                     </Left>
-                    <Right style={{flex: 2, flexDirection: 'row'}}>
+                    <Body style={{flex: 2, flexDirection: 'row'}}>
                       <Picker
                               mode="dropdown"
                               selectedValue={this.state.numberRow}
@@ -203,6 +189,12 @@ class BCTonKhoChiTiet extends Component {
                            <Item label="100" value="100" />
                            <Item label="--Tất cả--" value="0" />
                         </Picker>
+                    </Body>
+                    <Right style={{flex: 1, flexDirection: 'row', justifyContent:'flex-end'}}>                      
+                      <Button bordered rounded small style={{paddingLeft:5, paddingRight:5, marginRight:5}}
+                        onPress={() => this.onBtnSwitch()}>
+                        <Icon active name="grid" />
+                      </Button>  
                     </Right>
                   </CardItem>
                 </Card>
@@ -211,7 +203,11 @@ class BCTonKhoChiTiet extends Component {
                 <Card>
                 <CardItem cardBody>
                   <Body>        
-                  
+                  { this.state.isChartView? ( 
+                      <ScrollView>
+                       <ChartBar data={this.state.chartData}/>
+                      </ScrollView>
+                    ) : (
                     <FlatList
                         data={this.state.reportData}
                         automaticallyAdjustContentInsets={false}
@@ -219,14 +215,13 @@ class BCTonKhoChiTiet extends Component {
                         enableEmptySections={true}
                         ListHeaderComponent={() => 
                                     <ListItem style={styles.liHeader}>
-                                      <Text style={[styles.liTextHeader, {width:"40%"}]}>Kho</Text>
-                                      <Text style={[styles.liTextHeader, {width:"40%"}]}>Sản phẩm</Text>
-                                      <Text style={[styles.liTextHeader, {width:"20%", textAlign:"right"}]}>Số lượng</Text>                                      
+                                      <Text style={[styles.liTextHeader, {width:"70%"}]}>Sản phẩm</Text>
+                                      <Text style={[styles.liTextHeader, {width:"30%", textAlign:"right"}]}>Số lượng</Text>                                      
                                     </ListItem>}
                         renderItem={this._renderListItem}
                       >
                     </FlatList>                 
-                  
+                  )}
                   </Body>
                 </CardItem>
               </Card>
@@ -247,16 +242,14 @@ class BCTonKhoChiTiet extends Component {
 
     if(index % 2 == 0)  {
       return  <ListItem style={styles.liEven}>
-                <Text style={[styles.liText, {width:"40%"}]}>{item.warehouse}</Text>
-                <Text style={[styles.liText, {width:"40%"}]}>{item.product}</Text>
-                <Text style={[styles.liText, {width:"20%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
+                <Text style={[styles.liText, {width:"70%"}]}>{item.product}</Text>
+                <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
               </ListItem> 
     } else {
                                 
       return  <ListItem style={styles.liOdd}>
-                <Text style={[styles.liText, {width:"40%"}]}>{item.warehouse}</Text>
-                <Text style={[styles.liText, {width:"40%"}]}>{item.product}</Text>
-                <Text style={[styles.liText, {width:"20%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
+                <Text style={[styles.liText, {width:"70%"}]}>{item.product}</Text>
+                <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
               </ListItem>      
     }
   }  
