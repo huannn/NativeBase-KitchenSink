@@ -79,9 +79,18 @@ import AdvSegment from "./components/segment/segmentTab";
 import SimpleDeck from "./components/deckswiper/simple";
 import AdvancedDeck from "./components/deckswiper/advanced";
 
+import {Login, EmptyScreen, BCTonKhoChiTiet, BCChiSoChinhChiTiet, BCToChucLaoDongChiTiet} from "./m1";
+
 const AppNavigator = StackNavigator(
     {
         Drawer: { screen: Drawer },
+
+        Login: { screen: Login },
+
+        EmptyScreen: { screen: EmptyScreen },
+        BCTonKhoChiTiet: { screen: BCTonKhoChiTiet },
+        BCChiSoChinhChiTiet: { screen: BCChiSoChinhChiTiet },
+        BCToChucLaoDongChiTiet: { screen: BCToChucLaoDongChiTiet },
 
         Header1: { screen: Header1 },
         Header2: { screen: Header2 },
@@ -169,6 +178,7 @@ const AppNavigator = StackNavigator(
     },
     {
         initialRouteName: "Drawer",
+        // initialRouteName: "Login",
         headerMode: "none",
     }
 );

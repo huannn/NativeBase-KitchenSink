@@ -41,7 +41,7 @@ import styles from "./styles";
 const Item = Picker.Item;
 
 
-class BCTaiChinh extends Component {
+class BCToChucLaoDong extends Component {
 
 
  constructor(props) {
@@ -83,7 +83,7 @@ class BCTaiChinh extends Component {
       return;
     }
 
-    let url = MyConst.WS_URL + 'report/bctc2?type=1&year=' + year + '&subType=0';
+    let url = MyConst.WS_URL + 'report/bctcld?type=1&year=' + year + '&subType=0';
     fetch(url)
       .then(res => res.json())
       .then(responseJson => {
@@ -117,7 +117,7 @@ class BCTaiChinh extends Component {
                 </Button>
               </Left>
               <Body style={{flex:4, alignItems:"flex-start"}}>
-                <Title>Các chỉ số chính</Title>
+                <Title>Tổ chức lao động</Title>
               </Body>
               
             </Header>
@@ -145,14 +145,7 @@ class BCTaiChinh extends Component {
                           </Picker>
                       </Right>
                   </CardItem> 
-                  <CardItem style={styles.cardItem}>
-                      <Left>
-                        <Text style={[styles.paramText, {flex: 1}]}>Đơn vị tính</Text>
-                      </Left>
-                      <Right style={{flex: 2, flexDirection: 'row'}}>
-                        <Text>Triệu đồng</Text>  
-                      </Right>
-                  </CardItem>                    
+                  
                 </Card>
               </Row>
               <Row> 
@@ -211,7 +204,7 @@ class BCTaiChinh extends Component {
 
   _onPressItem(item){
     
-    this.props.navigation.navigate("BCTaiChinhChiTiet", {
+    this.props.navigation.navigate("BCToChucLaoDongChiTiet", {
                     subType: item.key, 
                     subReportName: item.name,
                     year: this.state.year,
@@ -241,4 +234,4 @@ class BCTaiChinh extends Component {
   }  
 }
 
-export default BCTaiChinh;
+export default BCToChucLaoDong;

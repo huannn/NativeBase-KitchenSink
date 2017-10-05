@@ -28,52 +28,52 @@ const datas = [
 
 	//huannn-begin
 	{
-		name: "Quân số",
+		name: "Chỉ số chính",
+		route: "BCChiSoChinh",
+		icon: "phone-portrait",
+		bg: "#477EEA",
+	},
+	{
+		name: "Tổ chức lao động",
+		route: "BCToChucLaoDong",
+		icon: "phone-portrait",
+		bg: "#477EEA",
+	},
+	{
+		name: "Nhân sự - Tiền lương",
 		route: "BCQuanSo",
 		icon: "phone-portrait",
 		bg: "#477EEA",
 	},
 	{
-		name: "Lương BQ",
-		route: "BCLuongBQ",
-		icon: "phone-portrait",
-		bg: "#477EEA",
-	},
-	{
-		name: "BC Sản xuất",
-		route: "BCSanXuat",
-		icon: "phone-portrait",
-		bg: "#477EEA",
-	},
-	{
-		name: "BC Tồn kho",
+		name: "Tồn kho",
 		route: "BCTonKho",
 		icon: "phone-portrait",
 		bg: "#477EEA",
 	},
 	{
-		name: "BC Tồn kho chi tiết",
-		route: "BCTonKhoChiTiet",
-		icon: "phone-portrait",
-		bg: "#477EEA",
-	},
-	{
-		name: "BC Tài chính",
-		route: "BCTaiChinh",
-		icon: "phone-portrait",
-		bg: "#477EEA",
-	},
-	{
-		name: "BC Tài sản",
+		name: "Tài sản",
 		route: "BCTaiSan",
 		icon: "phone-portrait",
 		bg: "#477EEA",
 	},
 	{
-		name: "BC ECA",
+		name: "Sản xuất",
+		route: "BCSanXuat",
+		icon: "phone-portrait",
+		bg: "#477EEA",
+	},
+	{
+		name: "Báo cáo ECA",
 		route: "BCECA",
 		icon: "phone-portrait",
 		bg: "#477EEA",
+	},
+	{
+		name: "Đăng xuất",
+		route: "Logout",
+		icon: "person",
+		bg: "#2c3e50",
 	},
 	//huannn-end
 	

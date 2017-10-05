@@ -36,7 +36,8 @@ import Segment from "./components/segment";
 import Toast from "./components/toast";
 import Actionsheet from "./components/actionsheet";
 
-import {BCQuanSo, BCLuongBQ, BCSanXuat, BCTonKho, BCTonKhoChiTiet, BCTaiChinh, BCTaiSan, BCECA, EmptyScreen} from "./m1";
+import {Logout, EmptyScreen, BCQuanSo, BCLuongBQ, BCSanXuat, BCTonKho, 
+        BCTaiChinh, BCChiSoChinh, BCTaiSan, BCECA, BCToChucLaoDong} from "./m1";
 
 const DrawerExample = DrawerNavigator(
   {
@@ -46,11 +47,13 @@ const DrawerExample = DrawerNavigator(
     BCLuongBQ: { screen: BCLuongBQ },
     BCSanXuat: { screen: BCSanXuat },
     BCTonKho: { screen: BCTonKho },
-    BCTonKhoChiTiet: { screen: BCTonKhoChiTiet},
     BCTaiChinh: { screen: BCTaiChinh},
+    BCChiSoChinh: { screen: BCChiSoChinh},
+    BCToChucLaoDong: { screen: BCToChucLaoDong},
     BCTaiSan: { screen: BCTaiSan},
     BCECA: { screen: BCECA},
     EmptyScreen: { screen: EmptyScreen},
+    Logout: { screen: Logout},
 
     Anatomy: { screen: Anatomy },
     Header: { screen: Header },
@@ -84,6 +87,7 @@ const DrawerExample = DrawerNavigator(
   },
   {
     initialRouteName: "Home",
+    // initialRouteName: "BCChiSoChinh",
     contentOptions: {
       activeTintColor: "#e91e63"
     },

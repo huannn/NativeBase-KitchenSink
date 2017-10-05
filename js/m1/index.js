@@ -1,17 +1,20 @@
-import BCQuanSo from './BCQuanSo'
-import BCLuongBQ from './BCLuongBQ'
-import BCSanXuat from './BCSanXuat'
-import BCTonKho from './BCTonKho'
-import BCTonKhoChiTiet from './BCTonKhoChiTiet'
-import BCTaiChinh from './BCTaiChinh'
-import BCChiSoChinh from './BCChiSoChinh'
-import BCChiSoChinhChiTiet from './BCChiSoChinhChiTiet'
-import BCToChucLaoDong from './BCToChucLaoDong'
-import BCTaiSan from './BCTaiSan'
-import BCECA from './BCECA'
-import EmptyScreen from './empty'
+import BCQuanSo from './BCQuanSo';
+import BCLuongBQ from './BCLuongBQ';
+import BCSanXuat from './BCSanXuat';
+import BCTonKho from './BCTonKho';
+import BCTonKhoChiTiet from './BCTonKhoChiTiet';
+import BCTaiChinh from './BCTaiChinh';
+import BCChiSoChinh from './BCChiSoChinh';
+import BCChiSoChinhChiTiet from './BCChiSoChinhChiTiet';
+import BCToChucLaoDong from './BCToChucLaoDong';
+import BCToChucLaoDongChiTiet from './BCToChucLaoDongChiTiet';
+import BCTaiSan from './BCTaiSan';
+import BCECA from './BCECA';
+import EmptyScreen from './empty';
+import Login from './Login';
+import Logout from './Logout';
 
-export {BCQuanSo, BCLuongBQ, BCSanXuat, BCTonKho, BCTonKhoChiTiet, 
+export {Login, Logout, EmptyScreen, BCQuanSo, BCLuongBQ, BCSanXuat, BCTonKho, BCTonKhoChiTiet, 
 		BCTaiChinh, BCChiSoChinh, BCChiSoChinhChiTiet, 
-		BCToChucLaoDong,
-		BCTaiSan, BCECA, EmptyScreen}
+		BCToChucLaoDong, BCToChucLaoDongChiTiet,
+		BCTaiSan, BCECA}

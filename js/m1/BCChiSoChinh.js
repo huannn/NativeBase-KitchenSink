@@ -145,14 +145,6 @@ class BCChiSoChinh extends Component {
                           </Picker>
                       </Right>
                   </CardItem> 
-                  <CardItem style={styles.cardItem}>
-                      <Left>
-                        <Text style={[styles.paramText, {flex: 1}]}>Đơn vị tính</Text>
-                      </Left>
-                      <Right style={{flex: 2, flexDirection: 'row'}}>
-                        <Text>Triệu đồng</Text>  
-                      </Right>
-                  </CardItem>                    
                 </Card>
               </Row>
               <Row> 
