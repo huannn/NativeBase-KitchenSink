@@ -6,6 +6,7 @@ import {AppRegistry,
     Dimensions,
     FlatList,
     ScrollView,
+    Platform,
     StyleSheet} from 'react-native';
 import {
   Container,
@@ -28,6 +29,8 @@ import {
   Text,
 } from "native-base";
 import { Grid, Row, Col } from "react-native-easy-grid";
+import {TextMask} from 'react-native-masked-text';
+
 import ChartBar from './ChartBar.js';
 
 import EmptyScreen from "./empty.js";
@@ -70,6 +73,13 @@ class BCChiSoChinhChiTiet extends Component {
       'v': this.props.navigation.state.params.value,
       'name': 'Năm ' + this.props.navigation.state.params.year
     }]);
+
+    //Bug chart view khi cac gia tri deu = 0
+    // if(chartData[0][0].v == 0 && chartData[0][1].v == 0 && chartData[0][2].v == 0) {
+    //   chartData[0][0].v = 0.1;
+    //   chartData[0][1].v = 0.1;
+    //   chartData[0][2].v = 0.1;
+    // } 
     
     this.state = {
       isLoaded: false,
@@ -119,6 +129,9 @@ class BCChiSoChinhChiTiet extends Component {
 
   render() {
 
+    let heightChart = (Dimensions.get('window').height / 5) * 2;
+    console.log("height: "+ heightChart);
+
     try {
 
         return (
@@ -137,19 +150,29 @@ class BCChiSoChinhChiTiet extends Component {
             </Header>
 
             <Grid>    
-              <Row style={{flex:1}}>
+              <Row style={{flex:2}}>
                 <Card>     
+                <CardItem header bordered style={styles.cardHeader}>
+                  <Text style={styles.textDefault}>
+                    Biểu đồ so sánh các năm
+                  </Text>
+                </CardItem>
                 <CardItem cardBody>
                     <Body>        
                         <ScrollView>
-                         <ChartBar data={this.state.chartData} height={100}/>
+                         <ChartBar data={this.state.chartData} height={heightChart}/>
                         </ScrollView>                    
                     </Body>
                   </CardItem>
                 </Card>
               </Row>          
-              <Row style={{flex:2}}> 
+              <Row style={{flex:3}}> 
                 <Card>                
+                <CardItem header bordered style={styles.cardHeader}>
+                <Text style={styles.textDefault}>
+                    Kế hoạch và thực hiện trong năm
+                  </Text>
+                </CardItem>
                 <CardItem cardBody>
                   <Body>        
                     <FlatList
@@ -190,21 +213,43 @@ class BCChiSoChinhChiTiet extends Component {
     if(index % 2 == 0)  {
       return  <ListItem style={styles.liEven}>
                 <Text style={[styles.liText, {width:"25%"}]}>{item.name}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.valueQ1.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.valueQ2.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.valueQ3.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.valueQ4.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.value.toLocaleString('en')}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.valueQ1)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.valueQ2)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.valueQ3)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.valueQ4)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.value)}</Text>
+
+                {/* <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.valueQ1}	
+                    type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.valueQ2}	
+                    type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.valueQ3}	
+                    type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.valueQ4}	
+                    type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.value}	
+                    type={'money'}	options={{unit: '', precision: 0}} />                     */}
               </ListItem> 
     } else {
                                 
       return  <ListItem style={styles.liOdd}>
                 <Text style={[styles.liText, {width:"25%"}]}>{item.name}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.valueQ1.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.valueQ2.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.valueQ3.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.valueQ4.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.value.toLocaleString('en')}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.valueQ1)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.valueQ2)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.valueQ3)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.valueQ4)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.value)}</Text>
+
+                {/* <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.valueQ1}	
+                    type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.valueQ2}	
+                    type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.valueQ3}	
+                    type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.valueQ4}	
+                    type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.value}	
+                    type={'money'}	options={{unit: '', precision: 0}} />  */}
               </ListItem>
     }
   }  

@@ -6,6 +6,7 @@ import {AppRegistry,
     Dimensions,
     FlatList,
     ScrollView,
+    Platform,
     StyleSheet} from 'react-native';
 import {
   Container,
@@ -28,6 +29,8 @@ import {
   Text,
 } from "native-base";
 import { Grid, Row, Col } from "react-native-easy-grid";
+import {TextMask} from 'react-native-masked-text';
+
 import ChartBar from './ChartBar.js';
 
 import EmptyScreen from "./empty.js";
@@ -175,13 +178,13 @@ class BCTonKhoChiTiet extends Component {
                     </Left>
                     <Body style={{flex: 2, flexDirection: 'row'}}>
                       <Picker
-                              mode="dropdown"
+                              mode="dialog"
                               selectedValue={this.state.numberRow}
                               onValueChange={this.onChangeNumberRow.bind(this)}
                               headerStyle={styles.pickerHeader}
                               headerBackButtonTextStyle={styles.textDefault}
                               headerTitleStyle={styles.textDefault}
-                              style={styles.picker}
+                              style={[styles.picker,{ width: Platform.OS === "ios" ? undefined : 100 }]}
                             >                           
                            <Item label="10" value="10" />
                            <Item label="20" value="20" />
@@ -243,13 +246,15 @@ class BCTonKhoChiTiet extends Component {
     if(index % 2 == 0)  {
       return  <ListItem style={styles.liEven}>
                 <Text style={[styles.liText, {width:"70%"}]}>{item.product}</Text>
-                <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
+                <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{MyConst._convertNumber(item.qty)}</Text>
+                {/* <TextMask	style={[styles.liText, {width:"30%", textAlign:"right"}]} value={item.qty}	type={'money'}	options={{unit: '', precision: 0}} /> */}
               </ListItem> 
     } else {
                                 
       return  <ListItem style={styles.liOdd}>
                 <Text style={[styles.liText, {width:"70%"}]}>{item.product}</Text>
-                <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
+                <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{MyConst._convertNumber(item.qty)}</Text>
+                {/* <TextMask	style={[styles.liText, {width:"30%", textAlign:"right"}]} value={item.qty}	type={'money'}	options={{unit: '', precision: 0}} /> */}
               </ListItem>      
     }
   }  

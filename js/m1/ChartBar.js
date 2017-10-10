@@ -19,7 +19,7 @@ SPDX-License-Identifier: Apache-2.0
 'use strict'
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet} from 'react-native';
+import { View, Text, Platform, StyleSheet} from 'react-native';
 import { Bar } from 'react-native-pathjs-charts'
 import Dimensions from 'Dimensions';
 import * as MyConst from './const.js';
@@ -38,29 +38,29 @@ class ChartBar extends Component {
     title: 'Bar (Column) - Basic',
   });
   render() {
-    let data = [
-      [{
-        "v": 49,
-        "name": "apple"
-      }, {
-        "v": 42,
-        "name": "apple"
-      }],
-      [{
-        "v": 69,
-        "name": "banana"
-      }, {
-        "v": 62,
-        "name": "banana"
-      }],
-      [{
-        "v": 29,
-        "name": "grape"
-      }, {
-        "v": 15,
-        "name": "grape"
-      }]
-    ]
+    // let data = [
+    //   [{
+    //     "v": 49,
+    //     "name": "apple"
+    //   }, {
+    //     "v": 42,
+    //     "name": "apple"
+    //   }],
+    //   [{
+    //     "v": 69,
+    //     "name": "banana"
+    //   }, {
+    //     "v": 62,
+    //     "name": "banana"
+    //   }],
+    //   [{
+    //     "v": 29,
+    //     "name": "grape"
+    //   }, {
+    //     "v": 15,
+    //     "name": "grape"
+    //   }]
+    // ]
 
     let options = {
       width: this.props.width? this.props.width : Dimensions.get('window').width - MyConst.MARGIN_CHART.width,
@@ -109,10 +109,24 @@ class ChartBar extends Component {
       }
     }
 
+    let chartData = this.props.data[0];
+    let hasData = false;
+    for(let item of chartData) {
+      if(item.v != 0) {
+        hasData = true;
+        break;
+      }
+    }
+
     return (
       <View style={styles.container}>
         
+        { hasData ? (
           <Bar data={this.props.data} options={options} accessorKey='v'/>
+        ) : (
+          <Text>Không có dữ liệu</Text>
+        )}
+          
         
       </View>
     )

@@ -19,7 +19,7 @@ SPDX-License-Identifier: Apache-2.0
 'use strict'
 
 import React, { Component } from 'react'
-import { View, StyleSheet} from 'react-native'
+import { View, Platform, StyleSheet} from 'react-native'
 import { StockLine } from 'react-native-pathjs-charts'
 import moment from 'moment'
 import Dimensions from 'Dimensions';

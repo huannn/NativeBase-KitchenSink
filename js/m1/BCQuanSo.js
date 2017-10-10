@@ -6,6 +6,7 @@ import {AppRegistry,
     Dimensions,
     FlatList,
     ScrollView,
+    Platform,
     StyleSheet} from 'react-native';
 import {
   Container,
@@ -29,6 +30,8 @@ import {
 } from "native-base";
 
 import { Grid, Row, Col } from "react-native-easy-grid";
+import {TextMask} from 'react-native-masked-text';
+
 import EmptyScreen from "./empty.js";
 import * as MyConst from './const.js';
 import ChartMonth from './ChartMonth.js';
@@ -165,7 +168,7 @@ class BCQuanSo extends Component {
 
         let deptItems = this.state.departments.map((item) => {return (<Item label={item.name} value={item.id} key={item.id}/>)});
         let monthItems = Object.keys(MyConst.CONST_MONTHS).map((key) => {return (<Item label={MyConst.CONST_MONTHS[key]} value={key} key={key}/>)});
-        let yearItems = this.state.years.map((item, index) => {return (<Item label={item} value={item} key={item}/>)});
+        let yearItems = this.state.years.map((item, index) => {return (<Item label={item.toString()} value={item} key={item}/>)});
 
         return (
           <Container>
@@ -200,7 +203,7 @@ class BCQuanSo extends Component {
                               headerStyle={styles.pickerHeader}
                               headerBackButtonTextStyle={styles.textDefault}
                               headerTitleStyle={styles.textDefault}
-                              style={styles.picker}
+                              style={[styles.picker,{ width: Platform.OS === "ios" ? undefined : 200 }]}
                             >
                           {deptItems}
                         </Picker>
@@ -225,7 +228,7 @@ class BCQuanSo extends Component {
                                 headerStyle={styles.pickerHeader}
                                 headerBackButtonTextStyle={styles.textDefault}
                                 headerTitleStyle={styles.textDefault}
-                                style={styles.picker}
+                                style={[styles.picker,{ width: Platform.OS === "ios" ? undefined : 100 }]}
                               >
                             {yearItems}
                           </Picker>
@@ -235,13 +238,13 @@ class BCQuanSo extends Component {
                       </Right>
                       <Right style={{flex: 2, flexDirection: 'row'}}>                          
                           <Picker
-                              mode="dropdown"
+                              mode="dialog"
                               selectedValue={this.state.reportType}
                               onValueChange={this.onChangeReportType.bind(this)}
                               headerStyle={styles.pickerHeader}
                               headerBackButtonTextStyle={styles.textDefault}
                               headerTitleStyle={styles.textDefault}
-                              style={styles.picker}
+                              style={[styles.picker,{ width: Platform.OS === "ios" ? undefined : 150 }]}
                             >                           
                            <Item label="Quân số" value="1" />
                            <Item label="Lương BQ" value="2" />
@@ -298,13 +301,15 @@ class BCQuanSo extends Component {
     if(index % 2 == 0)  {
       return  <ListItem style={styles.liEven}>
                 <Text style={[styles.liText, {width:"70%"}]}>{item.month}</Text>                
-                <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.value.toLocaleString('en')}</Text>
+                <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{MyConst._convertNumber(item.value)}</Text>
+                {/* <TextMask	style={[styles.liText, {width:"30%", textAlign:"right"}]} value={item.value}	type={'money'}	options={{unit: '', precision: 0}} /> */}
               </ListItem> 
     } else {
                                 
       return  <ListItem style={styles.liOdd}>
                 <Text style={[styles.liText, {width:"70%"}]}>{item.month}</Text>                
-                <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.value.toLocaleString('en')}</Text>
+                <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{MyConst._convertNumber(item.value)}</Text>
+                {/* <TextMask	style={[styles.liText, {width:"30%", textAlign:"right"}]} value={item.value}	type={'money'}	options={{unit: '', precision: 0}} /> */}
               </ListItem>      
     }
   }  

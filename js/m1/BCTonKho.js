@@ -6,6 +6,7 @@ import {AppRegistry,
     Dimensions,
     FlatList,
     ScrollView,
+    Platform,
     TouchableHighlight,
     StyleSheet} from 'react-native';
 import {
@@ -29,6 +30,8 @@ import {
   Text,
 } from "native-base";
 import { Grid, Row, Col } from "react-native-easy-grid";
+import {TextMask} from 'react-native-masked-text';
+
 import ChartBar from './ChartBar.js';
 
 import EmptyScreen from "./empty.js";
@@ -174,14 +177,14 @@ class BCTonKho extends Component {
                     </Left>
                     <Body style={{flex: 3, flexDirection: 'row'}}>
                       <Picker
-                              mode="dropdown"
+                              mode="dialog"
                               placeholder="Chọn kho"
                               selectedValue={this.state.whId}
                               onValueChange={this.onChangeWarehouse.bind(this)}
                               headerStyle={styles.pickerHeader}
                               headerBackButtonTextStyle={styles.textDefault}
                               headerTitleStyle={styles.textDefault}
-                              style={styles.picker}
+                              style={[styles.picker,{ width: Platform.OS === "ios" ? undefined : 200 }]}
                             >
                           {whItems}
                         </Picker>
@@ -193,13 +196,13 @@ class BCTonKho extends Component {
                     </Left>
                     <Body style={{flex: 2, flexDirection: 'row'}}>
                       <Picker
-                              mode="dropdown"
+                              mode="dialog"
                               selectedValue={this.state.numberRow}
                               onValueChange={this.onChangeNumberRow.bind(this)}
                               headerStyle={styles.pickerHeader}
                               headerBackButtonTextStyle={styles.textDefault}
                               headerTitleStyle={styles.textDefault}
-                              style={styles.picker}
+                              style={[styles.picker,{ width: Platform.OS === "ios" ? undefined : 100 }]}
                             >                           
                            <Item label="10" value="10" />
                            <Item label="20" value="20" />
@@ -241,14 +244,14 @@ class BCTonKho extends Component {
                               index % 2 == 0?  (
                                             <ListItem style={styles.liEven} onPress={() => this._onPressItem(item)}>
                                               <Text style={[styles.liText, {width:"70%"}]}>{item.warehouse}</Text>
-                                              <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
+                                              <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{MyConst._convertNumber(item.qty)}</Text>
                                             </ListItem> 
                                          
                                 ) : (
                                                             
                                           <ListItem style={styles.liOdd} onPress={() => this._onPressItem(item)}>
                                             <Text style={[styles.liText, {width:"70%"}]}>{item.warehouse}</Text>
-                                            <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
+                                            <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{MyConst._convertNumber(item.qty)}</Text>
                                           </ListItem>      
                                   
                                 )
@@ -282,17 +285,18 @@ class BCTonKho extends Component {
 
     if(index % 2 == 0)  {
       return <ListItem style={styles.liEven} onPress={() => this._onPressItem(item)}>
-                  <Text style={[styles.liText, {width:"70%"}]}>{item.warehouse}</Text>
-                  <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
-                </ListItem> 
+               <Text style={[styles.liText, {width:"70%"}]}>{item.warehouse}</Text>
+               {/* <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text> */}
+               {/* <TextMask	style={[styles.liText, {width:"30%", textAlign:"right"}]} value={item.qty}	type={'money'}	options={{unit: '', precision: 0}} /> */}
+             </ListItem> 
              
     } else {
                                 
       return <ListItem style={styles.liOdd}>
                 <Text style={[styles.liText, {width:"70%"}]}>{item.warehouse}</Text>
-                <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text>
-              </ListItem>      
-      
+                {/* <Text style={[styles.liText, {width:"30%", textAlign:"right"}]}>{item.qty.toLocaleString('en')}</Text> */}
+                {/* <TextMask	style={[styles.liText, {width:"30%", textAlign:"right"}]} value={item.qty}	type={'money'}	options={{unit: '', precision: 0}} /> */}
+              </ListItem>            
     }
   }
 }

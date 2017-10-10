@@ -6,6 +6,7 @@ import {AppRegistry,
     Dimensions,
     FlatList,
     ScrollView,
+    Platform,
     StyleSheet} from 'react-native';
 import {
   Container,
@@ -29,6 +30,8 @@ import {
 } from "native-base";
 
 import { Grid, Row, Col } from "react-native-easy-grid";
+import {TextMask} from 'react-native-masked-text';
+
 import EmptyScreen from "./empty.js";
 import * as MyConst from './const.js';
 
@@ -143,7 +146,7 @@ class BCSanXuat extends Component {
         //let deptItems = Object.keys(this.state.departments).map((key) => {return (<Item label={this.state.departments[key]} value={key} key={key}/>)});
         let deptItems = this.state.departments.map((item) => {return (<Item label={item.name} value={item.id} key={item.id}/>)});
         let monthItems = Object.keys(MyConst.CONST_MONTHS).map((key) => {return (<Item label={MyConst.CONST_MONTHS[key]} value={key} key={key}/>)});
-        let yearItems = this.state.years.map((item, index) => {return (<Item label={item} value={item} key={item}/>)});
+        let yearItems = this.state.years.map((item, index) => {return (<Item label={item.toString()} value={item} key={item}/>)});
 
         return (
           <Container>
@@ -171,14 +174,14 @@ class BCSanXuat extends Component {
                     </Left>
                     <Right style={{flex: 2, flexDirection: 'row'}}>
                       <Picker
-                              mode="dropdown"
+                              mode="dialog"
                               placeholder="Chọn phòng ban"
                               selectedValue={this.state.dept}
                               onValueChange={this.onChangeDepartment.bind(this)}
                               headerStyle={styles.pickerHeader}
                               headerBackButtonTextStyle={styles.textDefault}
                               headerTitleStyle={styles.textDefault}
-                              style={styles.picker}
+                              style={[styles.picker,{ width: Platform.OS === "ios" ? undefined : 250 }]}
                             >
                           {deptItems}
                         </Picker>
@@ -191,27 +194,27 @@ class BCSanXuat extends Component {
                       </Left>
                       <Right style={{flex: 2, flexDirection: 'row'}}>
                           <Picker
-                                mode="dropdown"
+                                mode="dialog"
                                 placeholder="Chọn tháng"
                                 selectedValue={this.state.month}
                                 onValueChange={this.onChangeMonth.bind(this)}
                                 headerStyle={styles.pickerHeader}
                                 headerBackButtonTextStyle={styles.textDefault}
                                 headerTitleStyle={styles.textDefault}
-                                style={styles.picker}
+                                style={[styles.picker,{ width: Platform.OS === "ios" ? undefined : 150 }]}
                               >
                             {monthItems}
                           </Picker>
 
                           <Picker
-                                mode="dropdown"
+                                mode="dialog"
                                 placeholder="Chọn năm"
                                 selectedValue={this.state.year}
                                 onValueChange={this.onChangeYear.bind(this)}
                                 headerStyle={styles.pickerHeader}
                                 headerBackButtonTextStyle={styles.textDefault}
                                 headerTitleStyle={styles.textDefault}
-                                style={styles.picker}
+                                style={[styles.picker,{ width: Platform.OS === "ios" ? undefined : 100 }]}
                               >
                             {yearItems}
                           </Picker>
@@ -262,16 +265,22 @@ class BCSanXuat extends Component {
       return  <ListItem style={styles.liEven}>
                 <Text numberOfLines={1} style={[styles.liText, {width:"35%"}]}>{item.department}</Text>
                 <Text numberOfLines={1} style={[styles.liText, {width:"35%"}]}>{item.product}</Text>
-                <Text numberOfLines={1} style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.qtyCommand}</Text>
-                <Text numberOfLines={1} style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.qtyComplete}</Text>
+                <Text numberOfLines={1} style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.qtyCommand)}</Text>
+                <Text numberOfLines={1} style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.qtyComplete)}</Text>
+                
+                {/* <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.qtyCommand}	type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.qtyComplete}	type={'money'}	options={{unit: '', precision: 0}} /> */}
               </ListItem> 
     } else {
                                 
       return  <ListItem style={styles.liOdd}>
                 <Text numberOfLines={1} style={[styles.liText, {width:"35%"}]}>{item.department}</Text>
                 <Text numberOfLines={1} style={[styles.liText, {width:"35%"}]}>{item.product}</Text>
-                <Text numberOfLines={1} style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.qtyCommand}</Text>
-                <Text numberOfLines={1} style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.qtyComplete}</Text>
+                <Text numberOfLines={1} style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.qtyCommand)}</Text>
+                <Text numberOfLines={1} style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.qtyComplete)}</Text>
+
+                {/* <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.qtyCommand}	type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.qtyComplete}	type={'money'}	options={{unit: '', precision: 0}} /> */}
               </ListItem>      
     }
   }  

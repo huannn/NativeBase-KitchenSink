@@ -6,6 +6,7 @@ import {AppRegistry,
     Dimensions,
     FlatList,
     ScrollView,
+    Platform,
     StyleSheet} from 'react-native';
 import {
   Container,
@@ -29,6 +30,8 @@ import {
 } from "native-base";
 
 import { Grid, Row, Col } from "react-native-easy-grid";
+import {TextMask} from 'react-native-masked-text';
+
 import EmptyScreen from "./empty.js";
 import * as MyConst from './const.js';
 
@@ -121,7 +124,7 @@ class BCECA extends Component {
         // }
 
         let monthItems = Object.keys(MyConst.CONST_MONTHS).map((key) => {return (<Item label={MyConst.CONST_MONTHS[key]} value={key} key={key}/>)});
-        let yearItems = this.state.years.map((item, index) => {return (<Item label={item} value={item} key={item}/>)});
+        let yearItems = this.state.years.map((item, index) => {return (<Item label={item.toString()} value={item} key={item}/>)});
 
         return (
           <Container>
@@ -149,27 +152,27 @@ class BCECA extends Component {
                       </Left>
                       <Right style={{flex: 2, flexDirection: 'row'}}>
                           <Picker
-                                mode="dropdown"
+                                mode="dialog"
                                 placeholder="Chọn tháng"
                                 selectedValue={this.state.month}
                                 onValueChange={this.onChangeMonth.bind(this)}
                                 headerStyle={styles.pickerHeader}
                                 headerBackButtonTextStyle={styles.textDefault}
                                 headerTitleStyle={styles.textDefault}
-                                style={styles.picker}
+                                style={[styles.picker,{ width: Platform.OS === "ios" ? undefined : 150 }]}
                               >
                             {monthItems}
                           </Picker>
 
                           <Picker
-                                mode="dropdown"
+                                mode="dialog"
                                 placeholder="Chọn năm"
                                 selectedValue={this.state.year}
                                 onValueChange={this.onChangeYear.bind(this)}
                                 headerStyle={styles.pickerHeader}
                                 headerBackButtonTextStyle={styles.textDefault}
                                 headerTitleStyle={styles.textDefault}
-                                style={styles.picker}
+                                style={[styles.picker,{ width: Platform.OS === "ios" ? undefined : 100 }]}
                               >
                             {yearItems}
                           </Picker>
@@ -218,19 +221,29 @@ class BCECA extends Component {
     if(index % 2 == 0)  {
       return  <ListItem style={styles.liEven}>
                 <Text style={[styles.liText, {width:"40%"}]}>{item.product}</Text>                
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.numberECA.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.totalChildren.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.totalChildrenECA.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.rateWrong.toLocaleString('en')}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.numberECA)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.totalChildren)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.totalChildrenECA)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.rateWrong)}</Text>
+
+                {/* <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.numberECA}	type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.totalChildren}	type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.totalChildrenECA}	type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.rateWrong}	type={'money'}	options={{unit: '', precision: 0}} /> */}
               </ListItem> 
     } else {
                                 
       return  <ListItem style={styles.liOdd}>
                 <Text style={[styles.liText, {width:"40%"}]}>{item.product}</Text>                
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.numberECA.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.totalChildren.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.totalChildrenECA.toLocaleString('en')}</Text>
-                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{item.rateWrong.toLocaleString('en')}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.numberECA)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.totalChildren)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.totalChildrenECA)}</Text>
+                <Text style={[styles.liText, {width:"15%", textAlign:"right"}]}>{MyConst._convertNumber(item.rateWrong)}</Text>
+
+                {/* <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.numberECA}	type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.totalChildren}	type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.totalChildrenECA}	type={'money'}	options={{unit: '', precision: 0}} />
+                <TextMask	style={[styles.liText, {width:"15%", textAlign:"right"}]} value={item.rateWrong}	type={'money'}	options={{unit: '', precision: 0}} /> */}
               </ListItem>      
     }
   }  

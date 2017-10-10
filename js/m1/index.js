@@ -1,5 +1,4 @@
 import BCQuanSo from './BCQuanSo';
-import BCLuongBQ from './BCLuongBQ';
 import BCSanXuat from './BCSanXuat';
 import BCTonKho from './BCTonKho';
 import BCTonKhoChiTiet from './BCTonKhoChiTiet';
@@ -14,7 +13,7 @@ import EmptyScreen from './empty';
 import Login from './Login';
 import Logout from './Logout';
 
-export {Login, Logout, EmptyScreen, BCQuanSo, BCLuongBQ, BCSanXuat, BCTonKho, BCTonKhoChiTiet, 
+export {Login, Logout, EmptyScreen, BCQuanSo, BCSanXuat, BCTonKho, BCTonKhoChiTiet, 
 		BCTaiChinh, BCChiSoChinh, BCChiSoChinhChiTiet, 
 		BCToChucLaoDong, BCToChucLaoDongChiTiet,
 		BCTaiSan, BCECA}

@@ -14,6 +14,7 @@ export default {
     marginBottom: 0
   },
   cardItem: {paddingLeft: 0, paddingRight: 0, paddingTop: 2, paddingBottom: 2},
+  cardHeader: {paddingLeft: 5, paddingRight: 0, paddingTop: 2, paddingBottom: 5, backgroundColor:"#0b0744"},
   picker: {borderColor: "#3276b1", borderRadius: 4, borderWidth: 0.5, margin:1, paddingLeft: 5, paddingRight: 5, height:35},
   pickerHeader: { backgroundColor: "#3276b1" },
   textDefault : { color: "#fff" },

@@ -12,8 +12,21 @@ export const CONST_MONTHS ={
         "11": "Tháng 11",
         "12": "Tháng 12",
     };
-export const WS_URL = "http://192.168.0.104:8080/IdempiereWS/rest/";
+export const WS_URL = "http://192.168.0.102:8080/IdempiereWS/rest/";
 export const MARGIN_CHART ={"width":50, "height":250};
 export const MIN_YEAR = 2016;
 export const AS_UID = "UID";
 export const AS_TOKEN = "TOKEN";
+
+export const _convertNumber = (value) => {
+    if(!value) {
+      return "";
+    } else {
+      //let x = value.toLocaleString('en');
+      var x = value.toString();
+      var pattern = /(-?\d+)(\d{3})/;
+      while (pattern.test(x))
+          x = x.replace(pattern, "$1,$2");
+      return x;
+    }
+  }
