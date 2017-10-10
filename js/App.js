@@ -177,8 +177,8 @@ const AppNavigator = StackNavigator(
         IconActionSheet: { screen: IconActionSheet },
     },
     {
-        initialRouteName: "Drawer",
-        // initialRouteName: "Login",
+        // initialRouteName: "Drawer",
+        initialRouteName: "Login",
         headerMode: "none",
     }
 );

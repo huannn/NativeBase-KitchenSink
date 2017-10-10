@@ -27,16 +27,8 @@ class EmptyScreen extends Component {
   	return (
         <Container>
         <Header>
-          <Left>
-            <Button
-              transparent
-              onPress={() => this.props.navigation.navigate("DrawerOpen")}
-            >
-              <Icon name="ios-menu" />
-            </Button>
-          </Left>
           <Body>
-            <Title>Loading...</Title>
+            <Title>Đang tải...</Title>
           </Body>
           <Right />
         </Header>
