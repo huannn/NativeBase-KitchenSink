@@ -1,12 +1,13 @@
 {
   "expo": {
     "sdkVersion": "19.0.0",
-    "icon": "http://nativebase.io/assets/img/front-page-icon.png",
+    "name": "M1Erp",
+    "icon": "./img/logo.png",
     "loading": {
       "hideExponentText": false,
       "backgroundImage": "./img/splashscreen.png"
     },
-    "orientation": "portrait",
+    // "orientation": "landscape",
     "primaryColor": "#cccccc",
     "packagerOpts": {
       "assetExts": [
@@ -17,6 +18,12 @@
     "androidStatusBar": {
       "barStyle": "light-content",
       "backgroundColor": "#334393"
+    },
+    "android": {
+      "package": "com.sopen.m1app"
+    },
+    "ios": {
+      "bundleIdentifier": "com.sopen.m1app"
     }
   }
 }

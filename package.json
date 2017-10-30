@@ -1,6 +1,6 @@
 {
   "name": "m1app",
-  "version": "2.3.1",
+  "version": "1.0.0",
   "private": true,
   "devDependencies": {
     "jest-expo": "19.0.5",
@@ -27,6 +27,7 @@
     "native-base": "2.3.1",
     "react": "16.0.0-alpha.12",
     "react-native": "0.46.4",
+    "react-native-masked-text": "^1.6.2",
     "react-native-modalbox": "1.4.2",
     "react-native-pathjs-charts": "^0.0.31",
     "react-native-scrollable-tab-view": "0.6.7",
