@@ -91,6 +91,7 @@ class BCChiSoChinhChiTiet extends Component {
       month: currentMonth,
       years: years,
       chartData: chartData,
+      orientation: 'LANDSCAPE',
     };
   }
 
@@ -129,7 +130,8 @@ class BCChiSoChinhChiTiet extends Component {
 
   render() {
 
-    let heightChart = (Dimensions.get('window').height / 5) * 2;
+    let heightChart = ((Dimensions.get('window').height - 350) / 5) * 2 ;
+    //let heightChart = 80 ;
     console.log("height: "+ heightChart);
 
     try {
@@ -152,14 +154,14 @@ class BCChiSoChinhChiTiet extends Component {
             <Grid>    
               <Row style={{flex:2}}>
                 <Card>     
-                <CardItem header bordered style={styles.cardHeader}>
-                  <Text style={styles.textDefault}>
-                    Biểu đồ so sánh các năm
-                  </Text>
-                </CardItem>
+                
                 <CardItem cardBody>
-                    <Body>        
+                    <Body>      
+                     
                         <ScrollView>
+                        <Text style={styles.textDefault}>
+                        Biểu đồ so sánh các năm
+                      </Text> 
                          <ChartBar data={this.state.chartData} height={heightChart}/>
                         </ScrollView>                    
                     </Body>
@@ -168,13 +170,10 @@ class BCChiSoChinhChiTiet extends Component {
               </Row>          
               <Row style={{flex:3}}> 
                 <Card>                
-                <CardItem header bordered style={styles.cardHeader}>
-                <Text style={styles.textDefault}>
-                    Kế hoạch và thực hiện trong năm
-                  </Text>
-                </CardItem>
+                
                 <CardItem cardBody>
-                  <Body>        
+                  <Body>      
+                  <ScrollView>  
                     <FlatList
                         data={this.state.reportData}
                         automaticallyAdjustContentInsets={false}
@@ -192,6 +191,7 @@ class BCChiSoChinhChiTiet extends Component {
                         renderItem={this._renderListItem}
                       >
                     </FlatList>                 
+                    </ScrollView>
                   </Body>
                 </CardItem>
               </Card>

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet,KeyboardAvoidingView, AsyncStorage, Alert} from 'react-native';
 import * as MyConst from './const.js';
 import LoginForm from './LoginForm';
+import EmptyPage from './empty';
 import Home from "../components/home/";
 
 // create a component
@@ -67,7 +68,7 @@ class Login extends Component {
         
         // Neu dang kiem tra login da luu thi chi hien thi man hinh loading
         if(this.state.storeChecking || this.state.loginChecking) {
-            return (<Home />);
+            return (<EmptyPage />);
         }
 
         return (
